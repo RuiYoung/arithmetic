@@ -1,37 +1,28 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: github pages
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+    - master
 
 jobs:
-  build:
-
+  build-deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
+    - uses: actions/checkout@v1
+    - run: npm install # 相当于npm install
     - run: npm run docs:build
-    - run: cd docs/.vuepress/dist
-    - run: git config --global user.email "lrycome@163.com"
-    - run: git config --global user.name "RuiYoung"
-    - run: git init
-    - run: git add -A
-    - run: git commit -m 'deploy'
-    - run: git push -f git@github.com:RuiYoung/arithmetic.git master:gh-pages
+
+    #发布到mybells.github.io/master
+    - name: Deploy ruiyoung.github.io/arithmetic
+      uses: peaceiris/actions-gh-pages@v2
       env:
-        CI: true
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        # EXTERNAL_REPOSITORY: mybells/mybells.github.io #可以新建一个mybells.github.io仓库发布到master
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: docs/.vuepress/dist
+      with:
+          emptyCommits: false
