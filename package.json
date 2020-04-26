@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/RuiYoung/arithmetic.git",
+  "homepage": "https://ruiyoung.github.io/arithmetic",
   "author": "Ruiyoung <714021656@qq.com>",
   "license": "MIT",
   "scripts": {
